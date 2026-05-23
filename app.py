@@ -185,6 +185,72 @@ st.markdown("""
     }
     .info-box .tag.green { background: #dcfce7; color: #166534; }
     .info-box .tag.amber { background: #fef3c7; color: #92400e; }
+    
+    div[data-testid="stSlider"] div[role="slider"] {
+        background-color: #1e40af !important; /* Changed: slider handle color to deep blue */
+    }
+    
+
+    div[data-testid="stSlider"] div[data-testid="stSliderHoverValue"],
+    div[data-testid="stSlider"] div[aria-valuenow] {
+        color: #3b82f6 !important; /* Added: updates floating dynamic values and inline labels to blue */
+    }
+    
+    .stSlider > div > div > div > div {
+        background: #1d4ed8 !important;
+    }
+    
+    .stSlider [data-testid="stSliderTrack"] > div {
+        background: #3b82f6 !important;
+    }
+
+    [data-testid="stTabs"] [data-baseweb="tab-list"] button[aria-selected="true"] {
+        color: #3b82f6 !important;
+    }
+    
+    [data-testid="stTabs"] [data-baseweb="tab-list"] button[aria-selected="true"] div {
+        color: #3b82f6 !important;
+    }
+    
+    [data-testid="stTabs"] [data-baseweb="tab-highlight"] {
+        background-color: #3b82f6 !important;
+    }
+    
+    button[data-testid="stBaseButton-primary"] {
+        background-color: #3b82f6 !important;
+        color: #ffffff !important;
+        border: 1px solid #2563eb !important;
+    }
+    button[data-testid="stBaseButton-primary"]:hover,
+    button[data-testid="stBaseButton-primary"]:focus,
+    button[data-testid="stBaseButton-primary"]:active {
+        background-color: #2563eb !important;
+        border-color: #1d4ed8 !important;
+        box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.5) !important; 
+    }
+    
+    div[data-testid="stSlider"] [data-testid="stSliderTrack"] > div > div {
+        background-color: #3b82f6 !important;
+    }
+    
+    div[data-testid="stSlider"] [role="slider"]:focus,
+    div[data-testid="stSlider"] [role="slider"]:active {
+        box-shadow: 0 0 0 10px rgba(59, 130, 246, 0.2) !important;
+    }
+
+    [data-testid="stTabs"] [data-baseweb="tab-list"] button:hover {
+        color: #60a5fa !important;
+    }
+            
+    div#custom-nav-radio div[role="radio"][aria-checked="true"] > div:first-child {
+        background-color: #3b82f6 !important;
+        border-color: #3b82f6 !important;
+    }
+
+    div#custom-nav-radio div[role="radio"][aria-checked="true"] > div:first-child::after {
+        background-color: rgba(59, 130, 246, 0.2) !important;
+    }
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -193,7 +259,7 @@ ARTIFACT_DIR = "artifacts"
 LABEL_MAP    = {0: "RENDAH", 1: "SEDANG", 2: "TINGGI"}
 CARD_CLASS   = {0: "result-low", 1: "result-medium", 2: "result-high"}
 
-from preprocessing import FEATURE_LABELS, FEATURE_RANGES, ALL_FEATURES
+from preprocessing import FEATURE_LABELS, FEATURE_RANGES
 
 FEATURE_HELP = {
     "anxiety_level":                "Skala 0-21 (GAD-7 adaptasi). Semakin tinggi = semakin cemas.",
@@ -524,11 +590,13 @@ def main():
     # Sidebar: Navigation + Settings
     with st.sidebar:
         st.markdown('<div class="nav-label">Navigasi</div>', unsafe_allow_html=True)
+        st.markdown('<div id="custom-nav-radio">', unsafe_allow_html=True)
         page = st.radio(
             "Halaman",
             ["Prediksi Stres", "Tentang Model", "Performa Model"],
             label_visibility="collapsed",
         )
+        st.markdown('</div>', unsafe_allow_html=True)
 
         st.markdown("---")
         st.markdown("## Pengaturan")
