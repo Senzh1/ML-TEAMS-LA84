@@ -30,7 +30,6 @@ st.markdown("""
         --text-faint: #94a3b8;
     }
 
-    /* Dark mode overrides */
     @media (prefers-color-scheme: dark) {
         :root {
             --bg-primary: #0f172a;
@@ -41,6 +40,8 @@ st.markdown("""
             --text-secondary: #cbd5e1;
             --text-muted: #94a3b8;
             --text-faint: #64748b;
+            --bg-card-dark: #1e293b;
+            --border-dark: rgba(255, 255, 255, 0.08);
         }
     }
 
@@ -56,6 +57,8 @@ st.markdown("""
         --text-secondary: #cbd5e1;
         --text-muted: #94a3b8;
         --text-faint: #64748b;
+        --bg-card-dark: #1e293b;
+        --border-dark: rgba(255, 255, 255, 0.08);
     }
 
     html, body, [class*="css"] {
@@ -65,25 +68,18 @@ st.markdown("""
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
 
-    /* Header banner - always dark */
-    .site-header {
-        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-        color: #f8fafc;
-        padding: 2.5rem 2rem;
-        border-radius: 12px;
-        margin-bottom: 2rem;
-        text-align: center;
-        border-bottom: 3px solid #3b82f6;
-    }
     .site-header h1 {
-        font-size: 1.75rem; font-weight: 700;
+        font-weight: 700;
         margin: 0 0 0.4rem 0; letter-spacing: -0.02em;
         color: #f8fafc;
     }
-    .site-header .subtitle { font-size: 0.9rem; color: #94a3b8; margin: 0; }
-    .site-header .credits { font-size: 0.75rem; color: #64748b; margin-top: 0.6rem; }
+            
+    .site-header p {
+        color: #94a3b8;
+        margin-top: 0;
+        font-size: 0.95rem;
+    }
 
-    /* Section headings */
     .section-heading {
         font-size: 1.2rem; font-weight: 600;
         color: var(--text-primary);
@@ -92,56 +88,122 @@ st.markdown("""
         border-bottom: 2px solid var(--border-color);
     }
 
-    /* Result card */
     .result-card {
-        padding: 2rem; border-radius: 12px;
-        text-align: center; margin: 0.5rem 0; border: 1px solid;
+        background-color: var(--bg-card-dark, #1e293b);
+        padding: 1.5rem 2rem;
+        border-radius: 12px;
+        border: 1px solid var(--border-dark, rgba(255,255,255,0.08));
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-height: 120px;
     }
-    .result-low { background: #f0fdf4; border-color: #86efac; }
-    .result-medium { background: #fffbeb; border-color: #fcd34d; }
-    .result-high { background: #fef2f2; border-color: #fca5a5; }
-    .result-label {
-        font-size: 0.8rem; font-weight: 500;
-        text-transform: uppercase; letter-spacing: 0.08em;
-        color: #64748b; margin-bottom: 0.3rem;
-    }
-    .result-value { font-size: 1.5rem; font-weight: 700; margin: 0.25rem 0; }
-    .result-low .result-value { color: #16a34a; }
-    .result-medium .result-value { color: #d97706; }
-    .result-high .result-value { color: #dc2626; }
-    .result-meta { font-size: 0.8rem; color: #64748b; margin-top: 0.5rem; }
+    
+    .border-low { border-left: 5px solid #16a34a !important; }
+    .border-medium { border-left: 5px solid #d97706 !important; }
+    .border-high { border-left: 5px solid #dc2626 !important; }
 
-    /* Metric cards */
+    .result-stress-title {
+        font-size: 2.2rem; 
+        font-weight: 800; 
+        margin: 0;
+        line-height: 1.1;
+        letter-spacing: -0.02em;
+    }
+    .result-confidence-sub {
+        font-size: 1.1rem;
+        margin-top: 0.4rem;
+        font-weight: 500;
+    }
+            
+    div[data-testid="stHorizontalBlock"] {
+        display: flex !important;
+        align-items: stretch !important;
+    }
+
+    div[data-testid="stHorizontalBlock"] > div[data-testid="column"] {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    
+    div[data-testid="column"]:has(.stPyplot) {
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: center !important;
+        width: 100% !important;
+    }
+
+    div[data-testid="column"] .stPyplot img {
+        width: 100% !important;
+        height: auto !important;
+        max-width: 400px;
+        object-fit: contain !important;
+    }
+
+    .model-info-card {
+        background-color: var(--bg-card-dark, #1e293b);
+        padding: 1rem 2rem;
+        border-radius: 12px;
+        border: 1px solid var(--border-dark, rgba(255,255,255,0.08));
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between; 
+        align-items: center;
+        min-height: auto;
+        margin-top: 1rem;
+    }
+
+    .model-info-label {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--text-muted);
+        margin-bottom: 0;
+    }
+
+    .model-info-value {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: #f8fafc;
+    }
+    
     .metric-card {
-        background: var(--bg-secondary); border: 1px solid var(--border-color);
-        border-radius: 10px; padding: 0.8rem 0.6rem; text-align: center;
+        background-color: var(--bg-card-dark, #1e293b);
+        border: 1px solid var(--border-dark, rgba(255,255,255,0.08));
+        border-radius: 10px;
+        padding: 1rem 0.6rem;
+        text-align: center;
+        margin-top: 1rem;
     }
-    .metric-card .value { font-size: 1.15rem; font-weight: 700; }
-    .metric-card .label { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.15rem; }
+    .metric-card .value { font-size: 1.2rem; font-weight: 700; }
+    .metric-card .label { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem; }
 
-    /* Recommendation items */
     .rec-item {
         background: var(--bg-secondary); border: 1px solid var(--border-color);
-        border-left: 3px solid #3b82f6; border-radius: 8px;
-        padding: 0.9rem 1rem; margin-bottom: 0.5rem;
-        font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5;
+        border-left: 3px solid #3b82f6;
+        border-radius: 8px !important;
+        padding: 0.9rem 1rem !important; 
+        margin-bottom: 0.5rem !important;
+        font-size: 0.88rem !important; 
+        color: var(--text-secondary, #cbd5e1) !important; 
+        line-height: 1.5 !important;
+        display: block !important;
     }
-    .rec-item.warning { border-left-color: #f59e0b; }
-    .rec-item.danger { border-left-color: #ef4444; }
+    .rec-item.warning { border-left-color: #f59e0b !important; }
+    .rec-item.danger { border-left-color: #ef4444 !important; }
 
-    /* Footer */
     .site-footer {
         font-size: 0.75rem; color: var(--text-faint); text-align: center;
         margin-top: 3rem; padding: 1.2rem 0; border-top: 1px solid var(--border-color);
     }
 
-    /* Sidebar - no forced background, inherit theme */
     .nav-label {
         font-size: 0.7rem; font-weight: 600; text-transform: uppercase;
         letter-spacing: 0.1em; color: var(--text-faint); margin-bottom: 0.3rem;
     }
 
-    /* Scale guide table */
     .scale-guide {
         width: 100%; font-size: 0.78rem;
         border-collapse: collapse; margin: 0.5rem 0;
@@ -155,7 +217,6 @@ st.markdown("""
         color: var(--text-secondary);
     }
 
-    /* Info box for model explanation */
     .info-box {
         background: var(--bg-secondary); border: 1px solid var(--border-color);
         border-radius: 10px; padding: 1.4rem 1.5rem; margin-bottom: 1rem;
@@ -167,24 +228,6 @@ st.markdown("""
     .info-box p {
         font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; margin: 0.4rem 0;
     }
-    .info-box .param-table {
-        width: 100%; font-size: 0.82rem; border-collapse: collapse; margin-top: 0.8rem;
-    }
-    .info-box .param-table th {
-        text-align: left; padding: 0.35rem 0.6rem;
-        background: var(--bg-tertiary); font-weight: 600; color: var(--text-primary);
-    }
-    .info-box .param-table td {
-        padding: 0.35rem 0.6rem; border-bottom: 1px solid var(--border-color);
-        color: var(--text-secondary);
-    }
-    .info-box .tag {
-        display: inline-block; background: #dbeafe; color: #1e40af;
-        font-size: 0.72rem; font-weight: 600; padding: 0.15rem 0.5rem;
-        border-radius: 4px; margin-right: 0.3rem;
-    }
-    .info-box .tag.green { background: #dcfce7; color: #166534; }
-    .info-box .tag.amber { background: #fef3c7; color: #92400e; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -270,22 +313,24 @@ def proba_donut(proba, predicted_label):
     colors = ["#22c55e", "#f59e0b", "#ef4444"]
     explode = [0.03 if i == predicted_label else 0 for i in range(3)]
 
-    fig, ax = plt.subplots(figsize=(4, 4))
+    fig, ax = plt.subplots(figsize=(4, 4), facecolor="none", layout="constrained")
+    
     wedges, texts, autotexts = ax.pie(
         proba, labels=labels, colors=colors, autopct="%1.1f%%",
         startangle=90, pctdistance=0.78, explode=explode,
-        wedgeprops=dict(width=0.4, edgecolor="white", linewidth=2),
-        textprops=dict(fontsize=9, fontfamily="sans-serif"),
+        wedgeprops=dict(width=0.4, edgecolor="#1e293b", linewidth=2),
+        textprops=dict(fontsize=9, fontfamily="sans-serif", color="#f8fafc"),
     )
+    
     for t in autotexts:
         t.set_fontsize(8.5)
         t.set_fontweight(600)
-        t.set_color("#334155")
-    ax.set_title("Distribusi Probabilitas", fontsize=10, fontweight=600,
-                 pad=12, color="#1e293b")
-    plt.tight_layout()
+        t.set_color("#ffffff")
+        
+    fig.patch.set_alpha(0.0)
+    ax.patch.set_alpha(0.0)
+    
     return fig
-
 
 # Page: Prediksi
 def page_prediksi(active_model, model_name, scaler, feature_cols):
@@ -350,39 +395,66 @@ def page_prediksi(active_model, model_name, scaler, feature_cols):
         st.markdown('<div class="section-heading">Hasil Prediksi</div>',
                     unsafe_allow_html=True)
 
-        col_r, col_c = st.columns([1, 1])
-        with col_r:
-            st.markdown(f"""
-            <div class="result-card {CARD_CLASS[label]}">
-                <div class="result-label">Tingkat Stres Terdeteksi</div>
-                <div class="result-value">{LABEL_MAP[label]}</div>
-                <div class="result-meta">
-                    Model: <b>{model_name}</b> &nbsp;&bull;&nbsp; Confidence: <b>{confidence:.1f}%</b>
-                </div>
-            </div>""", unsafe_allow_html=True)
+        BORDER_CLASS = {
+            0: "border-low",
+            1: "border-medium",
+            2: "border-high"
+        }
 
+        COLOR_MAP = {
+            0: "#16a34a",
+            1: "#d97706",
+            2: "#dc2626"
+        }
+
+        col_r, col_c = st.columns([6, 4])
+
+        with col_r:
+            # main stress
+            st.markdown(f"""
+            <div class="result-card {BORDER_CLASS[label]}" style="margin-bottom: 1rem;">
+                <div class="result-stress-title" style="color: {COLOR_MAP[label]};">
+                    {LABEL_MAP[label]}
+                </div>
+                <div class="result-confidence-sub">
+                    Confidence Level: <b>{confidence:.1f}%</b>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            # stress levels
             mc1, mc2, mc3 = st.columns(3)
             for col_w, cls_lbl, cls_col, p in zip(
                 [mc1, mc2, mc3], ["Rendah", "Sedang", "Tinggi"],
                 ["#16a34a", "#d97706", "#dc2626"], proba
             ):
                 col_w.markdown(f"""
-                <div class="metric-card">
+                <div class="metric-card" style="margin-top: 0;">
                     <div class="value" style="color:{cls_col};">{p*100:.1f}%</div>
                     <div class="label">{cls_lbl}</div>
                 </div>""", unsafe_allow_html=True)
 
+            # model
+            st.markdown(f"""
+            <div class="model-info-card">
+                <div class="model-info-label">Model Prediksi</div>
+                <div class="model-info-value">{model_name}</div>
+            </div>
+            """, unsafe_allow_html=True)
+
         with col_c:
+            # donut chart
             fig = proba_donut(proba, label)
             st.pyplot(fig)
             plt.close(fig)
 
         # Recommendations
         st.markdown("---")
-        st.markdown('<div class="section-heading">Rekomendasi</div>',
-                    unsafe_allow_html=True)
+        st.markdown('<div class="section-heading">Rekomendasi</div>', unsafe_allow_html=True)
+
         recs = RECOMMENDATIONS[label]
         rc1, rc2 = st.columns(2)
+
         for i, (severity, text) in enumerate(recs):
             target_col = rc1 if i % 2 == 0 else rc2
             target_col.markdown(
@@ -390,12 +462,14 @@ def page_prediksi(active_model, model_name, scaler, feature_cols):
                 unsafe_allow_html=True
             )
 
+        st.markdown(" ")
+        st.markdown(" ")
+        
         # Input summary
         with st.expander("Ringkasan Data yang Dimasukkan"):
             rows = [{"Fitur": FEATURE_LABELS.get(k, k), "Nilai": v}
                     for k, v in input_vals.items()]
             st.dataframe(pd.DataFrame(rows), width="stretch", hide_index=True)
-
 
 # Page: Tentang Model
 def page_tentang_model():
@@ -512,9 +586,9 @@ def main():
     st.markdown("""
     <div class="site-header">
         <h1>Prediktor Stres Akademik Mahasiswa</h1>
-        <p class="subtitle">Masukkan kondisi Anda untuk mendapatkan prediksi tingkat stres</p>
+        <p>Masukkan kondisi Anda untuk mendapatkan prediksi tingkat stres.</p>
     </div>""", unsafe_allow_html=True)
-
+    
     rf, svm, scaler, feature_cols, status = load_artifacts()
     if status == "not_trained":
         st.error("Model belum dilatih. Jalankan `python train_models.py` terlebih dahulu.")
