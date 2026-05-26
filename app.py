@@ -81,7 +81,7 @@ st.markdown("""
     }
 
     .section-heading {
-        font-size: 1.2rem; font-weight: 600;
+        font-size: 1.5rem; font-weight: 600;
         color: var(--text-primary);
         margin: 1.5rem 0 1rem 0;
         padding-bottom: 0.5rem;
@@ -186,7 +186,7 @@ st.markdown("""
         border-radius: 8px !important;
         padding: 0.9rem 1rem !important; 
         margin-bottom: 0.5rem !important;
-        font-size: 0.88rem !important; 
+        font-size: 0.95rem !important; 
         color: var(--text-secondary, #cbd5e1) !important; 
         line-height: 1.5 !important;
         display: block !important;
@@ -227,6 +227,57 @@ st.markdown("""
     }
     .info-box p {
         font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; margin: 0.4rem 0;
+    }
+            
+    .promo-banner {
+        background-color: var(--bg-card-dark, #1e293b);
+        border: 1px solid var(--border-dark, rgba(255, 255, 255, 0.08));
+        border-radius: 12px;
+        padding: 1.5rem 2rem;
+        margin-bottom: 2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .promo-banner p {
+        color: var(--text-secondary, #cbd5e1);
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin-top: 0;
+        margin-bottom: 1.2rem;
+    }
+    
+    .btn-danger-custom {
+        background-color: #dc2626 !important; /* Premium Crisp Red Crimson */
+        color: #ffffff !important;
+        font-weight: 600 !important;
+        font-size: 0.9rem !important;
+        padding: 0.6rem 1.5rem !important;
+        border-radius: 8px !important;
+        border: none !important;
+        cursor: pointer !important;
+        transition: background-color 0.2s ease;
+        text-decoration: none !important;
+        display: inline-block;
+    }
+    .btn-danger-custom:hover {
+        background-color: #b91c1c !important; /* Slightly deeper red shade on hover */
+    }
+    
+    div[data-testid="stVerticalBlockBorderWrapper"]:has(.factor-card-title) {
+        background: var(--bg-secondary) !important;
+        border: 1px solid var(--border-color) !important;
+        border-radius: 10px !important;
+        padding: 1.2rem 1.5rem 1.5rem 1.5rem !important;
+        margin-bottom: 1rem !important;
+    }
+    
+    .factor-card-title {
+        font-size: 1.05rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-top: 0;
+        margin-bottom: 0.5rem;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -337,8 +388,6 @@ def page_prediksi(active_model, model_name, scaler, feature_cols):
     st.markdown('<div class="section-heading">Isi Data Kondisi Anda</div>',
                 unsafe_allow_html=True)
 
-    tabs = st.tabs(["Psikologis", "Kesehatan Fisik", "Lingkungan", "Akademik & Sosial"])
-
     input_vals = {}
 
     psych_cols  = ["anxiety_level", "self_esteem", "mental_health_history", "depression"]
@@ -364,28 +413,40 @@ def page_prediksi(active_model, model_name, scaler, feature_cols):
             val = col_obj.slider(label, lo, hi, default, help=help_txt)
         return val
 
-    with tabs[0]:
-        c1, c2 = st.columns(2)
-        for i, feat in enumerate(psych_cols):
-            input_vals[feat] = render_slider(feat, c1 if i % 2 == 0 else c2)
+    row1_col1, row1_col2 = st.columns(2)
 
-    with tabs[1]:
-        c1, c2 = st.columns(2)
-        for i, feat in enumerate(health_cols):
-            input_vals[feat] = render_slider(feat, c1 if i % 2 == 0 else c2)
+    with row1_col1:
+        with st.container(border=True):
+            st.markdown('<div class="factor-card-title">Faktor Psikologis</div>', unsafe_allow_html=True)
+            c1, c2 = st.columns(2)
+            for i, feat in enumerate(psych_cols):
+                input_vals[feat] = render_slider(feat, c1 if i % 2 == 0 else c2)
 
-    with tabs[2]:
-        c1, c2 = st.columns(2)
-        for i, feat in enumerate(env_cols):
-            input_vals[feat] = render_slider(feat, c1 if i % 2 == 0 else c2)
+    with row1_col2:
+        with st.container(border=True):
+            st.markdown('<div class="factor-card-title">Kesehatan Fisik</div>', unsafe_allow_html=True)
+            c1, c2 = st.columns(2)
+            for i, feat in enumerate(health_cols):
+                input_vals[feat] = render_slider(feat, c1 if i % 2 == 0 else c2)
 
-    with tabs[3]:
-        c1, c2 = st.columns(2)
-        for i, feat in enumerate(acad_cols):
-            input_vals[feat] = render_slider(feat, c1 if i % 2 == 0 else c2)
+    row2_col1, row2_col2 = st.columns(2)
 
-    st.markdown("")
-    predict_btn = st.button("Prediksi Tingkat Stres", type="primary", width="stretch")
+    with row2_col1:
+        with st.container(border=True):
+            st.markdown('<div class="factor-card-title">Kondisi Lingkungan</div>', unsafe_allow_html=True)
+            c1, c2 = st.columns(2)
+            for i, feat in enumerate(env_cols):
+                input_vals[feat] = render_slider(feat, c1 if i % 2 == 0 else c2)
+
+    with row2_col2:
+        with st.container(border=True):
+            st.markdown('<div class="factor-card-title">Akademik & Sosial</div>', unsafe_allow_html=True)
+            c1, c2 = st.columns(2)
+            for i, feat in enumerate(acad_cols):
+                input_vals[feat] = render_slider(feat, c1 if i % 2 == 0 else c2)
+
+    st.markdown('<div style="margin-top: 1rem;"></div>', unsafe_allow_html=True)
+    predict_btn = st.button("Prediksi Tingkat Stres", type="primary", use_container_width=True)
 
     if predict_btn:
         label, proba = predict(active_model, scaler, feature_cols, input_vals)
@@ -464,6 +525,17 @@ def page_prediksi(active_model, model_name, scaler, feature_cols):
 
         st.markdown(" ")
         st.markdown(" ")
+        
+        st.markdown("""
+        <div class="promo-banner">
+            <p>
+                Bantu kami memberikan masukan Anda tentang aplikasi kami! (~2 menit)
+            </p>
+            <a href="https://docs.google.com/forms/" target="_blank" class="btn-danger-custom">
+                Isi Google Form
+            </a>
+        </div>
+        """, unsafe_allow_html=True)
         
         # Input summary
         with st.expander("Ringkasan Data yang Dimasukkan"):
@@ -589,6 +661,17 @@ def main():
         <p>Masukkan kondisi Anda untuk mendapatkan prediksi tingkat stres.</p>
     </div>""", unsafe_allow_html=True)
     
+    st.markdown("""
+    <div class="promo-banner">
+        <p>
+            Bantu kami memberikan masukan Anda tentang aplikasi kami! (~2 menit)
+        </p>
+        <a href="https://docs.google.com/forms/" target="_blank" class="btn-danger-custom">
+            Isi Google Form
+        </a>
+    </div>
+    """, unsafe_allow_html=True)
+
     rf, svm, scaler, feature_cols, status = load_artifacts()
     if status == "not_trained":
         st.error("Model belum dilatih. Jalankan `python train_models.py` terlebih dahulu.")
