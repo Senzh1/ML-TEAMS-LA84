@@ -193,6 +193,36 @@ st.markdown("""
     }
     .rec-item.warning { border-left-color: #f59e0b !important; }
     .rec-item.danger { border-left-color: #ef4444 !important; }
+            
+    .rec-legend-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;    
+        gap: 1.5rem;         
+        margin-top: -0.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .rec-legend-item {
+        display: flex;
+        align-items: center;
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: var(--text-secondary, #cbd5e1);
+    }
+
+    .legend-circle {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin-right: 0.5rem;
+        display: inline-block;
+    }
+
+    .legend-circle.info { background-color: #3b82f6; }
+    .legend-circle.warning { background-color: #f59e0b; }
+    .legend-circle.danger { background-color: #ef4444; }
 
     .site-footer {
         font-size: 0.75rem; color: var(--text-faint); text-align: center;
@@ -248,7 +278,7 @@ st.markdown("""
     }
     
     .btn-danger-custom {
-        background-color: #dc2626 !important; /* Premium Crisp Red Crimson */
+        background-color: #dc2626 !important;
         color: #ffffff !important;
         font-weight: 600 !important;
         font-size: 0.9rem !important;
@@ -261,7 +291,7 @@ st.markdown("""
         display: inline-block;
     }
     .btn-danger-custom:hover {
-        background-color: #b91c1c !important; /* Slightly deeper red shade on hover */
+        background-color: #b91c1c !important;
     }
     
     div[data-testid="stVerticalBlockBorderWrapper"]:has(.factor-card-title) {
@@ -287,7 +317,7 @@ ARTIFACT_DIR = "artifacts"
 LABEL_MAP    = {0: "RENDAH", 1: "SEDANG", 2: "TINGGI"}
 CARD_CLASS   = {0: "result-low", 1: "result-medium", 2: "result-high"}
 
-from preprocessing import FEATURE_LABELS, FEATURE_RANGES, ALL_FEATURES
+from preprocessing import FEATURE_LABELS, FEATURE_RANGES
 
 FEATURE_HELP = {
     "anxiety_level":                "Skala 0-21 (GAD-7 adaptasi). Semakin tinggi = semakin cemas.",
@@ -314,25 +344,27 @@ FEATURE_HELP = {
 
 RECOMMENDATIONS = {
     0: [
-        ("info", "Pertahankan rutinitas positif Anda — kesehatan mental Anda dalam kondisi baik."),
-        ("info", "Lanjutkan pola tidur dan gaya hidup aktif yang mendukung keseimbangan belajar."),
-        ("info", "Manfaatkan momentum ini untuk menetapkan target akademik lebih tinggi."),
-        ("info", "Luangkan waktu untuk hobi dan aktivitas kreatif — ini menjaga keseimbangan mental."),
+        ("info", "Pertahankan rutinitas yang sedang Anda jalani. Kesehatan mental Anda sedang dalam kondisi baik."),
+        ("info", "Pertahankan jadwal tidur dan gaya hidup aktif yang membantu menyeimbangkan kegiatan belajar."),
+        ("info", "Dengan momentum ini, capai lebih tinggi secara akademik."),
+        ("info", "Luangkan waktu untuk hobi dan aktivitas kreatif untuk membawa keseimbangan bagi pikiran."),
     ],
+
     1: [
-        ("warning", "Identifikasi sumber stres utama Anda dan buat rencana aksi konkret."),
-        ("warning", "Prioritaskan kualitas tidur — hindari begadang tidak perlu."),
-        ("info", "Gunakan teknik Pomodoro (25 menit fokus + 5 menit istirahat) saat belajar."),
-        ("info", "Perbanyak interaksi sosial positif; ceritakan kegelisahan ke orang terpercaya."),
-        ("info", "Batasi konsumsi kafein dan paparan media sosial yang memicu kecemasan."),
+        ("warning", "Pahami apa yang membuat Anda stres dan buat rencana tindakan yang nyata"),
+        ("warning", "Prioritaskan kualitas tidur, kurangi begadang seminimal mungkin."),
+        ("info", "Saat belajar, gunakan Pomodoro – (fokus 25 menit + istirahat 5 menit)"),
+        ("info", "Tingkatkan interaksi sosial yang positif; ceritakan kekhawatiranmu kepada orang terpercaya"),
+        ("info", "Hindari kafein dan kecemasan yang dipicu media sosial."),
     ],
+
     2: [
-        ("danger", "Segera konsultasi dengan konselor psikologi kampus atau profesional kesehatan mental."),
-        ("danger", "Kurangi beban komitmen non-esensial sementara — fokus pada pemulihan."),
-        ("warning", "Praktikkan teknik pernapasan dalam (4-7-8) atau meditasi mindfulness setiap hari."),
-        ("warning", "Bangun sistem dukungan: hubungi keluarga, teman dekat, atau mentor akademik."),
-        ("info", "Olahraga ringan 20-30 menit setiap hari terbukti menurunkan kadar kortisol."),
-        ("info", "Hindari isolasi — stres tinggi memburuk jika dihadapi sendirian."),
+        ("bahaya", "segera temui konselor psikologi kampus atau profesional kesehatan mental sesegera mungkin."),
+        ("bahaya", "Kurangi sementara jumlah komitmen yang tidak perlu—fokus pada pemulihan."),
+        ("warning", "Latih teknik pernapasa (4-7-8) atau mindfulness untuk meditasi setiap hari"),
+        ("warning" , "Bangun sistem dukungan: hubungi keluarga, sahabat dekat, atau mentor akademik."),
+        ("info", "20-30 menit olahraga ringan setiap hari dapat membantu mengurangi kadar kortisol."),
+        ("info", "Berhentilah mengisolasi diri, stres akan terasa lebih berat kalau Anda menghadapinya sendirian!"),
     ],
 }
 
@@ -478,7 +510,7 @@ def page_prediksi(active_model, model_name, scaler, feature_cols):
                     {LABEL_MAP[label]}
                 </div>
                 <div class="result-confidence-sub">
-                    Confidence Level: <b>{confidence:.1f}%</b>
+                    Tingkat Kepercayaan: <b>{confidence:.1f}%</b>
                 </div>
             </div>
             """, unsafe_allow_html=True)
@@ -512,6 +544,20 @@ def page_prediksi(active_model, model_name, scaler, feature_cols):
         # Recommendations
         st.markdown("---")
         st.markdown('<div class="section-heading">Rekomendasi</div>', unsafe_allow_html=True)
+
+        st.markdown("""
+        <div class="rec-legend-container">
+            <div class="rec-legend-item">
+                <span class="legend-circle info"></span> Info
+            </div>
+            <div class="rec-legend-item">
+                <span class="legend-circle warning"></span> Peringatan
+            </div>
+            <div class="rec-legend-item">
+                <span class="legend-circle danger"></span> Tindakan Segera
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
 
         recs = RECOMMENDATIONS[label]
         rc1, rc2 = st.columns(2)
@@ -680,7 +726,7 @@ def main():
 
     # Sidebar: Navigation + Settings
     with st.sidebar:
-        st.markdown('<div class="nav-label">Navigasi</div>', unsafe_allow_html=True)
+        st.markdown("## Navigasi")
         page = st.radio(
             "Halaman",
             ["Prediksi Stres", "Tentang Model", "Performa Model"],
