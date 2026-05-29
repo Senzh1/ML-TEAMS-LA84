@@ -577,7 +577,7 @@ def page_prediksi(active_model, model_name, scaler, feature_cols):
             <p>
                 Bantu kami memberikan masukan Anda tentang aplikasi kami! (~2 menit)
             </p>
-            <a href="https://docs.google.com/forms/" target="_blank" class="btn-danger-custom">
+            <a href="https://forms.gle/tqQf4vvqSz2SX8RS7" target="_blank" class="btn-danger-custom">
                 Isi Google Form
             </a>
         </div>
